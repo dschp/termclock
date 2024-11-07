@@ -15,8 +15,13 @@
 #define WHITE     "\033[37m"
 
 void
-main(void)
+main(int argc, char *argv[])
 {
+  if (argc != 2) {
+    printf("%s TimeZone\n", argv[0]);
+    return;
+  }
+
   struct tm *tm;
   char est[6], utc[6], jst[6], ltime[9], ldate[12], ldayw[4];
 
@@ -24,18 +29,18 @@ main(void)
   do {
     time_t now = time(NULL);
 
-    setenv("TZ", ":EST", 1);
+    setenv("TZ", "EST", 1);
     tm = localtime(&now);
     strftime(est, sizeof(est), "%R", tm);
 
     tm = gmtime(&now);
     strftime(utc, sizeof(utc), "%R", tm);
 
-    setenv("TZ", ":Asia/Tokyo", 1);
+    setenv("TZ", "Japan", 1);
     tm = localtime(&now);
     strftime(jst, sizeof(jst), "%R", tm);
 
-    setenv("TZ", ":Asia/Bangkok", 1);
+    setenv("TZ", argv[1], 1);
     tm = localtime(&now);
     strftime(ldate, sizeof(ldate), "%F", tm);
     strftime(ldayw, sizeof(ldayw), "%a", tm);
