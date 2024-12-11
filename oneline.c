@@ -34,6 +34,7 @@ main(int argc, char *argv[])
 
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws);
     if (ws.ws_col < 15) continue;
+    printf("\033[%dB", ws.ws_row / 2);
 
     time_t now = time(NULL);
 
@@ -44,14 +45,16 @@ main(int argc, char *argv[])
     strftime(ltime, sizeof(ltime), "%T", tm);
 
     if (ws.ws_col < 26) {
-      for (int i = (ws.ws_col - 9) / 2; i > 0; i--)
-	putchar(' ');
+      int col = (ws.ws_col - 9) / 2;
+      printf("\033[%dC", col);
       printf(CYAN BOLD "%s " RESET, ltime);
+      printf("\033[%dC", col);
     } else if (ws.ws_col < 56) {
-      for (int i = (ws.ws_col - 26) / 2; i > 0; i--)
-	putchar(' ');
+      int col = (ws.ws_col - 26) / 2;
+      printf("\033[%dC", col);
       printf(BOLD "%s (%s) " RESET, ldate, ldayw);
       printf(CYAN BOLD "%s " RESET, ltime);
+      printf("\033[%dC", col);
     } else {
       setenv("TZ", "EST", 1);
       tm = localtime(&now);
@@ -64,13 +67,14 @@ main(int argc, char *argv[])
       tm = localtime(&now);
       strftime(jst, sizeof(jst), "%R", tm);
 
-      for (int i = (ws.ws_col - 56) / 2; i > 0; i--)
-	putchar(' ');
+      int col = (ws.ws_col - 56) / 2;
+      printf("\033[%dC", col);
       printf(BOLD "%s (%s) " RESET, ldate, ldayw);
       printf(CYAN BOLD "%s" RESET, ltime);
       printf(" EST:" YELLOW BOLD "%s" RESET, est);
       printf(" UTC:" GREEN BOLD  "%s" RESET, utc);
       printf(" JST:" RED BOLD    "%s " RESET, jst);
+      printf("\033[%dC", col);
     }
     fflush(stdout);
   } while (nanosleep(&ts, NULL) == 0);
