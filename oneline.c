@@ -34,7 +34,9 @@ main(int argc, char *argv[])
 
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &ws);
     if (ws.ws_col < 15) continue;
-    printf("\033[%dB", ws.ws_row / 2);
+    int row = ws.ws_row / 2;
+    if (row > 0)
+      printf("\033[%dB", row);
 
     time_t now = time(NULL);
 
@@ -76,6 +78,8 @@ main(int argc, char *argv[])
       printf(" JST:" RED BOLD    "%s " RESET, jst);
       printf("\033[%dC", col);
     }
+    if (row > 0)
+      printf("\033[%dB", row);
     fflush(stdout);
   } while (nanosleep(&ts, NULL) == 0);
 }
