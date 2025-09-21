@@ -1,4 +1,4 @@
-all: multiline oneline print-dates
+all: multiline oneline print-dates streamclock
 clean:
 	rm -f multiline oneline
 .PHONY: all clean
@@ -8,5 +8,7 @@ multiline: multiline.c
 oneline: oneline.c
 	${CC} -o $@ $?
 print-dates: print-dates.c
+	${CC} -o $@ $?
+streamclock: streamclock.c
 	${CC} -o $@ $?
 
