@@ -26,6 +26,8 @@ main(int argc, char *argv[])
   char est[6], utc[6], jst[6], ltime[9], ldate[12], ldayw[4];
 
   struct timespec ts = {.tv_sec = 1, .tv_nsec = 0};
+
+  printf("\033[?25l");
   do {
     time_t now = time(NULL);
 

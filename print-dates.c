@@ -41,6 +41,7 @@ main(int argc, char *argv[])
 		{ "Pacific/Honolulu",    "Hawaii",      WHITE },
 	};
 
+	printf("\033[?25l");
 	do {
 		printf("\033[2J\033[;1H\n");
 
@@ -58,8 +59,6 @@ main(int argc, char *argv[])
 				printf(WHITE " %s " BOLD "%s%s" RESET WHITE " / %s\n",
 					   date_buf, tzs[i][2], time_buf, tzs[i][1]);
 		}
-
-		printf("\n");
 		fflush(stdout);
 	} while (nanosleep(&ts, NULL) == 0);
 }
